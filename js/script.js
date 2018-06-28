@@ -33,3 +33,35 @@ ready(() => {
 				document.getElementById('currencyTo').innerHTML = '<option value="">Empty</option>';
 				document.getElementById('currencyFrom').innerHTML = '<option value="">Empty</option>';
 			});
+
+//function to convert fetched currency
+function moneyConvert() {
+			const fro_sym = document.getElementById('currencyFrom').value;
+			const to_sym = document.getElementById('currencyTo').value;
+			const key = `${fro_sym}_${to_sym}`;
+			const inv_key = `${to_sym}_${fro_sym}`;
+			const keys = `${key},${inv_key}`;
+			fetch(`https://free.currencyconverterapi.com/api/v5/convert?q=${keys}`)
+				.then(response => {
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response.json();
+				})
+				.then(data => {
+					if (data.results) {
+						const obj = data.results[key];
+						const rate = obj.val;
+						const from = document.querySelector(".currencyFrom").value;
+						const to = (from * rate).toFixed(2);
+						document.querySelector(".currencyTo").value = to;
+					} else {
+						throw Error("No result found");
+					}
+				}).catch(err => {
+					document.querySelector('.err').innerHTML = err;
+				});
+		}
+
+		document.querySelector(".convertButton").addEventListener("click", moneyConvert);
+	});
