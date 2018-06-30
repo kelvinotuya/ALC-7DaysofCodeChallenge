@@ -46,11 +46,21 @@ self.addEventListener('fetch', function (e) {
 	
 	e.respondWith(
 		//To respond with an entry from the cache if there is one, else fetch from the network.
-      caches.match(e.request).then(function (response) {
+		caches.match(e.request).then(function (response) {
 			if (response) {
 				return response;
 			} else {
-				return fetch(e.request);
+				return fetch(e.request)
+					.then(function (res) {
+						caches.open('dynamic-cache')
+							.then(function (cache) {
+								cache.put(e.request.url, res.clone());
+								return res;
+							});
+					})
+					.catch(function(err) {
+						
+				});
 			}
 		})
 	);
