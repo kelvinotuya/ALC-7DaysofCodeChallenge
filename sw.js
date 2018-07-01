@@ -1,14 +1,9 @@
-importScripts('/js/idb.js');
-importScripts('/js/index.js');
+importScripts('/idb.js');
+importScripts('/index.js');
 
 const CACHE_STATIC_NAME = 'static-cache-v4';
 const CACHE_DYNAMIC_NAME = 'dynamic-v5';
 
-// let dbPromise = idb.open('currency-db', 1, function (db) {
-// 	if (!db.objectStoreNames.contains('currencies')) {
-// 		db.createObjectStore('currencies', { keyPath: 'id' });
-// 	}
-// });
 
 self.addEventListener('install', function(e) {
 	console.log('[ServiceWorker] Installed');
@@ -19,12 +14,12 @@ self.addEventListener('install', function(e) {
 			return cache.addAll([
 				'/',
 				'/index.html',
-				'/js/script.js',
-				'/css/style.css',
-				'/js/idb.js',
-				'/js/index.js',
-				'/js/promise.js',
-				'/js/fetch.js',
+				'/script.js',
+				'/style.css',
+				'/idb.js',
+				'/index.js',
+				'/promise.js',
+				'/fetch.js',
 				'https://fonts.googleapis.com/css?family=Roboto:400,700'
 			]);
 		})
@@ -50,14 +45,6 @@ self.addEventListener('activate', function (e) {
 	return self.clients.claim();
 });
 
-// function isInArray(string, array) {
-// 	for (let i = 0; i < array.length; i++) {
-// 		if (array[i] === string) {
-// 			return true;
-// 		}
-// 	}
-// 	return false;
-// }
 
 self.addEventListener('fetch', function (e) {
 	//console.log("[ServiceWorker] Fetching", e.request.url);
@@ -70,23 +57,13 @@ self.addEventListener('fetch', function (e) {
 					.then(function (data) {
 						for (let key in data) {
 							writeData('currencies', data[key]);
-							// dbPromise
-							// 	.then(function (db) {
-							// 	  const tx = db.transaction('currencies', 'readwrite');
-							// 		const store = tx.objectStore('currencies');
-							// 		store.put(data[key]);
-							// 		return tx.complete;
-							// 	});
+						
 						}
 					});
 				return res;
 			})
 		);
-	// }
-	// else if (isInArray(et.request.url, CACHE_STATIC_NAME)) {
-	// 	e.respondWith(
-	// 		caches.match(e.request)
-	// 	);
+
 	} else {
 		e.respondWith(
 			caches.match(e.request).then(function (response) {
