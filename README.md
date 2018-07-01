@@ -1,4 +1,4 @@
-# ALC-7DaysofCodeChalleng
+# ALC-7DaysofCodeChallenge
 
 Currency Calculator
 A currency converter built with html, css and javascript; to work as a progressive web app.
