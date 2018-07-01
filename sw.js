@@ -1,3 +1,4 @@
+
 importScripts('js/idb.js');
 
 //var dbPromise;
@@ -73,6 +74,7 @@ self.addEventListener('install', function(e) {
 		caches.open(CACHE_STATIC_NAME).then(function(cache) {
 			console.log("[ServiceWorker] Precaching App Shell");
 			return cache.addAll([
+
 				'index.html',
 				'js/script.js',
 				'css/style.css',
