@@ -1,5 +1,5 @@
-importScripts('/idb.js');
-importScripts('/index.js');
+importScripts('./idb.js');
+importScripts('./index.js');
 
 const CACHE_STATIC_NAME = 'static-cache-v4';
 const CACHE_DYNAMIC_NAME = 'dynamic-v5';
@@ -13,13 +13,13 @@ self.addEventListener('install', function(e) {
 			console.log("[ServiceWorker] Precaching App Shell");
 			return cache.addAll([
 				'/',
-				'/index.html',
-				'/script.js',
-				'/style.css',
-				'/idb.js',
-				'/index.js',
-				'/promise.js',
-				'/fetch.js',
+				'./index.html',
+				'./script.js',
+				'./style.css',
+				'./idb.js',
+				'./index.js',
+				'./promise.js',
+				'./fetch.js',
 				'https://fonts.googleapis.com/css?family=Roboto:400,700'
 			]);
 		})
@@ -90,15 +90,4 @@ self.addEventListener('fetch', function (e) {
 
 // self.addEventListener('fetch', event => {
 // 	event.respondWith(
-// 			caches.open(staticCacheName).then(cache => {
-// 					return cache.match(event.request.url).then(response => {
-// 							if (response) {
-// 									console.log(response);
-// 									return response;
-// 							}
-// 							// If no item matched in cache, attempt fetching from network
-// 							return fetch(event.request);
-// 					});
-// 			})
-// 	);
-// });
+// 			caches.open(staticCacheName
