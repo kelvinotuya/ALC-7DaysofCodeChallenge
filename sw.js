@@ -3,11 +3,12 @@ importScripts('/js/idb.js');
 const CACHE_STATIC_NAME = 'static-cache-v4';
 const CACHE_DYNAMIC_NAME = 'dynamic-v5';
 
-const dbPromise = idb.open('currency-db', 1, function (db) {
-	if (!idb.objectStoreNames.contains('currencies')) {
-		db.creatObjectStore('currencies', { keyPath: 'id' });
+let dbPromise = idb.open('currency-db', 1, function (db) {
+	if (!db.objectStoreNames.contains('currencies')) {
+		db.createObjectStore('currencies', { keyPath: 'id' });
 	}
 });
+
 self.addEventListener('install', function(e) {
 	console.log('[ServiceWorker] Installed');
 
@@ -69,8 +70,8 @@ self.addEventListener('fetch', function (e) {
 						for (let key in data) {
 							dbPromise
 								.then(function (db) {
-									const tx = db.transaction('currencies', 'readwrite');
-									const currencies = tx.objectStore('currencies');
+									let tx = db.transaction('currencies', 'readwrite');
+									let store = tx.objectStore('currencies');
 									store.put(data[key]);
 									return tx.complete;
 								});
