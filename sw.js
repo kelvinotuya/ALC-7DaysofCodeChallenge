@@ -1,13 +1,14 @@
 importScripts('/js/idb.js');
+importScripts('/js/index.js');
 
 const CACHE_STATIC_NAME = 'static-cache-v4';
 const CACHE_DYNAMIC_NAME = 'dynamic-v5';
 
-let dbPromise = idb.open('currency-db', 1, function (db) {
-	if (!db.objectStoreNames.contains('currencies')) {
-		db.createObjectStore('currencies', { keyPath: 'id' });
-	}
-});
+// let dbPromise = idb.open('currency-db', 1, function (db) {
+// 	if (!db.objectStoreNames.contains('currencies')) {
+// 		db.createObjectStore('currencies', { keyPath: 'id' });
+// 	}
+// });
 
 self.addEventListener('install', function(e) {
 	console.log('[ServiceWorker] Installed');
@@ -59,8 +60,8 @@ self.addEventListener('activate', function (e) {
 // }
 
 self.addEventListener('fetch', function (e) {
-	// console.log("[ServiceWorker] Fetching", e.request.url);
-	const url = 'https://free.currencyconverterapi.com/api/v5/currencies';
+	//console.log("[ServiceWorker] Fetching", e.request.url);
+	const url = 'https://free.currencyconverterapi.com/api/v5/convert?q=${keys}';
 	if (e.request.url.indexOf(url) > -1) {
 		e.respondWith(fetch(e.request)
 			.then(function (res) {
@@ -68,13 +69,14 @@ self.addEventListener('fetch', function (e) {
 				clonedRes.json()
 					.then(function (data) {
 						for (let key in data) {
-							dbPromise
-								.then(function (db) {
-									let tx = db.transaction('currencies', 'readwrite');
-									let store = tx.objectStore('currencies');
-									store.put(data[key]);
-									return tx.complete;
-								});
+							writeData('currencies', data[key]);
+							// dbPromise
+							// 	.then(function (db) {
+							// 	  const tx = db.transaction('currencies', 'readwrite');
+							// 		const store = tx.objectStore('currencies');
+							// 		store.put(data[key]);
+							// 		return tx.complete;
+							// 	});
 						}
 					});
 				return res;
@@ -108,3 +110,18 @@ self.addEventListener('fetch', function (e) {
 
 	}
 });
+
+// self.addEventListener('fetch', event => {
+// 	event.respondWith(
+// 			caches.open(staticCacheName).then(cache => {
+// 					return cache.match(event.request.url).then(response => {
+// 							if (response) {
+// 									console.log(response);
+// 									return response;
+// 							}
+// 							// If no item matched in cache, attempt fetching from network
+// 							return fetch(event.request);
+// 					});
+// 			})
+// 	);
+// });
