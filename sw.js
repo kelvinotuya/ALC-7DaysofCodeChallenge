@@ -1,3 +1,4 @@
+
 importScripts('js/idb.js');
 
 //var dbPromise;
@@ -73,13 +74,14 @@ self.addEventListener('install', function(e) {
 		caches.open(CACHE_STATIC_NAME).then(function(cache) {
 			console.log("[ServiceWorker] Precaching App Shell");
 			return cache.addAll([
-				'./index.html',
-				'./js/script.js',
-				'./css/style.css',
-				'./js/idb.js',
-				'./js/index.js',
-				'./js/promise.js',
-				'./js/fetch.js',
+
+				'index.html',
+				'js/script.js',
+				'css/style.css',
+				'js/idb.js',
+				'js/index.js',
+				'js/promise.js',
+				'js/fetch.js',
 				'//fonts.googleapis.com/css?family=Roboto:400,700'
 			]);
 		})
@@ -163,7 +165,7 @@ self.addEventListener('fetch', function (e) {
 							const clone = res.clone();
 							caches.open(CACHE_DYNAMIC_NAME)
 								.then(function (cache) {
-									cache.put(e.request.url, clone();									
+									cache.put(e.request.url, clone;									
 								});
 							return res;
 						}).catch(function(err){
