@@ -2,7 +2,7 @@
 importScripts('js/idb.js');
 
 //var dbPromise;
-var idbcurrencies;
+const idbcurrencies;
 
 function createDB() {
 	/*dbPromise = idb.open('currency-db', 1, function(upgradeDB) {
@@ -165,7 +165,7 @@ self.addEventListener('fetch', function (e) {
 							const clone = res.clone();
 							caches.open(CACHE_DYNAMIC_NAME)
 								.then(function (cache) {
-									cache.put(e.request.url, clone);									
+									cache.put(e.request.url, clone;									
 								});
 							return res;
 						}).catch(function(err){
